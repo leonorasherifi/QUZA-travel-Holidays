@@ -170,26 +170,31 @@
                   <div class="trip-search-inner white-bg d-flex">
                      <div class="input-group">
                         <label>Reiseziel*</label>
-                        <input type="text" name="s" placeholder="Geben Sie Ihr Reiseziel ein">
+                        <input type="text" id="destination" placeholder="Geben Sie Ihr Reiseziel ein">
                      </div>
+
                      <div class="input-group">
                         <label>Personenzahl*</label>
-                        <input type="text" name="s" placeholder="Anzahl der Reisenden">
+                        <input type="number" id="persons" placeholder="Anzahl der Reisenden">
                      </div>
+
                      <div class="input-group width-col-3">
                         <label>Anreisedatum*</label>
                         <i class="far fa-calendar"></i>
-                        <input class="input-date-picker" type="text" name="s" placeholder="TT / MM / JJ" autocomplete="off" readonly="readonly">
+                        <input class="input-date-picker" id="arrival" type="text" placeholder="TT / MM / JJ" autocomplete="off" readonly>
                      </div>
+
                      <div class="input-group width-col-3">
                         <label>Abreisedatum*</label>
                         <i class="far fa-calendar"></i>
-                        <input class="input-date-picker" type="text" name="s" placeholder="TT / MM / JJ" autocomplete="off" readonly="readonly">
+                        <input class="input-date-picker" id="departure" type="text" placeholder="TT / MM / JJ" autocomplete="off" readonly>
                      </div>
+
                      <div class="input-group width-col-3">
                         <label class="screen-reader-text">Suchen</label>
                         <!-- <input type="submit" name="travel-search" value="JETZT ANFRAGEN"> -->
-                        <a href="https://quza.de/site/reisen_landing/?iframe_url=https%3A%2F%2Fpauschalreise.schmetterling.de%2Fsearch%2Fregion%3Fibe%3Dpackage%26taid%3D44324%26dur%3D%26adult%3D2&iframe_template=traveltainment&iframe_licence&iframe_link_id=eec24ac4-62dc-4994-b550-4ee84f9ab1a3" class="button-primary">JETZT ANFRAGEN</a>
+                        <!-- <button type="button" class="button-primary" onclick="buildTTLink()">JETZT ANFRAGEN</button> -->
+                         <a  class="button-primary" href="/iframe-url.html">JETZT ANFRAGEN</a>
                      </div>
                   </div>
                </div>
@@ -222,7 +227,7 @@
                                        <img src="assets/images/img1.jpg" alt="">
                                     </figure>
                                     <div class="meta-cat bg-meta-cat">
-                                       <a href="#">THAILAND</a>
+                                       <a href="/package-detail.html">THAILAND</a>
                                     </div>
                                     <div class="desti-content">
                                        <h3><a href="#">Bangkok & Inselträume</a></h3>
@@ -1115,6 +1120,38 @@
          </div>
          <!-- header html end -->
       </div>
+
+      <script>
+function buildTTLink() {
+    const destination = document.getElementById("destination").value;
+    const persons = document.getElementById("persons").value;
+    const arrival = document.getElementById("arrival").value;
+    const departure = document.getElementById("departure").value;
+
+    // Convert dates from DD/MM/YY → YYYY-MM-DD
+    function convertDate(d) {
+        const parts = d.split("/");
+        return `20${parts[2]}-${parts[1]}-${parts[0]}`;
+    }
+
+    const ddate = convertDate(arrival);
+    const rdate = convertDate(departure);
+
+    // You MUST replace this later with correct rid/rgid from the Excel file
+    // For now, fallback to region=15 (example)
+    const rid = 15;
+
+    const baseURL = "https://pauschalreise.schmetterling.de/search/region";
+
+    const deeplink = `${baseURL}?taid=44324&ibe=package&rid=${rid}&adult=${persons}&ddate=${ddate}&rdate=${rdate}`;
+
+    // Open inside your iFrame page:
+    const finalURL = `https://quza.de/site/reisen_landing/?iframe_url=${encodeURIComponent(deeplink)}&iframe_template=traveltainment`;
+
+    window.location.href = finalURL;
+}
+</script>
+
 
 
       <!-- JavaScript -->
